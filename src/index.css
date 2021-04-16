@@ -1,5 +1,14 @@
+html {
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+}
+
 body {
   margin: 0;
+  height: 100%;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -10,4 +19,31 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.card {
+  min-width: 20%;
+}
+
+@media (min-width: 576px) {
+  .card-deck .card {
+      -ms-flex: 1 0 0%;
+      flex: 1 0 0%;
+      margin: 20px;
+  }
+}
+
+.card-img {
+  width: 100%;
+  /* height: 20vh; */
+  object-fit: cover;
+}
+
+.inner {
+  overflow: hidden;
+  transition: max-height 0.2s ease;
+}
+
+.MuiIconButton-root {
+  padding: 0;
 }
