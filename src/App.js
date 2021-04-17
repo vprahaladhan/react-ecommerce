@@ -15,31 +15,37 @@ const App = () => {
     queryProducts().then(products => setProducts(products));
   }, []);
 
-  const Cards = ({ products }) => (
+  const Cards = () => (
     <CardDeck>
-      {products.map(product => <Card key={product.id} product={product} /> )}
+      {products.map(product => <Card key={product.id} product={product} addToCart={addToCart} cart={cart}/> )}
     </CardDeck>
   );
 
-  const queryCart = (method='GET', body=null) => (
-    fetch(`${process.env.REACT_APP_LOCAL_URL}/cart`, {
+  const queryCart = (method='GET', body=null) => {
+    console.log('Req body >> ', body);
+    return fetch(`${process.env.REACT_APP_LOCAL_URL}/cart`, {
       method,
-      body      
+      body: body ? JSON.stringify(body) : null,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }      
     }).then(response => response.json())
-  )
+  };
 
   const queryProducts = (method='GET', body=null) => (
     fetch(`${process.env.REACT_APP_API_URL}/products`, {
       method,
+      body: body ? JSON.stringify(body) : null,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
-      },
-      body
+      }
     }).then(response => response.json())
   )
 
-  const addToCart = ({ product }) => {
+  const addToCart = (product) => {
+    console.log('Product to add >> ', product);
     queryCart('POST', product);
     setCart(cart.concat(product));
   }
@@ -62,9 +68,9 @@ const App = () => {
     </Navbar>
     <Switch>
       <Route path="/" render={() => <div><h1>Welcome Home!</h1></div>} exact />
-      <Route path="/products" render={() => <Cards products={products} addToCart={addToCart} />} exact />
+      <Route path="/products" render={() => <Cards />} exact />
       <Route path="/products/:id" render={({ match }) => <div><h1>Product ID: {match.params.id}</h1></div>} />
-      <Route path="/cart" render={() => <Cart />} />
+      <Route path="/cart" render={() => <Cart cart={cart} />} />
     </Switch>
     </div>
   );

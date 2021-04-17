@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import Text from './ExpendableText';
 
-const ProductCard = ({ product }) => (
+const ProductCard = ({ product, addToCart, cart }) => (
   <Card>
     <Link to={`/products/${product.id}`}> 
       <Card.Img variant="top" src={product.image} alt={product.title} className='card-img' />
@@ -17,7 +17,16 @@ const ProductCard = ({ product }) => (
       <Card.Text>AUD {product.price}</Card.Text>
     </Card.Body>
     <Card.Footer>
-      <Button>Add to cart</Button>
+      <Button 
+        disabled={cart.find(({ product_sku }) => product_sku === product.id)}
+        onClick={() => addToCart({
+          product_sku: product.id,
+          title: product.title,
+          price: product.price
+        })}
+      >
+        Add to cart
+      </Button>
     </Card.Footer>
   </Card>
 );
