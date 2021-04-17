@@ -2,7 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 
+import 'rsuite/dist/styles/rsuite-default.css';
 import './index.css';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 

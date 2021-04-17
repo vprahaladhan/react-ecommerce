@@ -4,6 +4,7 @@ import { CardDeck, Nav, Navbar } from 'react-bootstrap';
 
 import Card from './components/Card';
 import Cart from './components/Cart';
+import Product from './components/Product';
 import Badge from './components/CartBadge';
 
 const App = () => {
@@ -45,7 +46,6 @@ const App = () => {
   )
 
   const addToCart = (product) => {
-    console.log('Product to add >> ', product);
     queryCart('POST', product);
     setCart(cart.concat(product));
   }
@@ -69,7 +69,10 @@ const App = () => {
     <Switch>
       <Route path="/" render={() => <div><h1>Welcome Home!</h1></div>} exact />
       <Route path="/products" render={() => <Cards />} exact />
-      <Route path="/products/:id" render={({ match }) => <div><h1>Product ID: {match.params.id}</h1></div>} />
+      <Route 
+        path="/products/:id" 
+        render={({ match }) => <Product product={products.find(prod => prod.id === parseInt(match.params.id))} />} 
+        />
       <Route path="/cart" render={() => <Cart cart={cart} />} />
     </Switch>
     </div>
