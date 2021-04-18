@@ -45,7 +45,6 @@ code {
   align-self: center;
 }
 
-
 .inner {
   overflow: hidden;
   transition: max-height 0.2s ease;
@@ -53,4 +52,30 @@ code {
 
 .MuiIconButton-root {
   padding: 0;
+}
+
+#cart-action-container {
+  display: flex;
+}
+
+.cart-action {
+  flex: 0.33;
+  margin: 50px;
+}
+
+.cart-action a {
+  color:white;
+}
+
+.cart-action a:hover {
+  text-decoration: none;
+}
+
+.nav-link {
+  font-size: large;
+  font-weight: bolder;
+}
+
+.ui.inverted.menu {
+  background: blue;
 }

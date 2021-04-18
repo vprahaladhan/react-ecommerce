@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import Text from './ExpendableText';
+import Text from './ExpandableText';
 
 const ProductCard = ({ product, addToCart, cart }) => (
   <Card>
@@ -22,6 +22,7 @@ const ProductCard = ({ product, addToCart, cart }) => (
         onClick={() => addToCart({
           product_sku: product.id,
           title: product.title,
+          quantity: 1,
           price: product.price
         })}
       >

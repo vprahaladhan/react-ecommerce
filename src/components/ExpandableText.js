@@ -15,7 +15,7 @@ const styles = {
   }
 };
 
-const ExpendableText = ({ maxHeight, children }) => {
+const ExpandableText = ({ maxHeight, children }) => {
   const ref = React.useRef();
   const [shouldShowExpand, setShouldShowExpand] = React.useState(false);
   const [expanded, setExpanded] = React.useState(true);
@@ -42,4 +42,4 @@ const ExpendableText = ({ maxHeight, children }) => {
   );
 };
 
-export default ExpendableText;
+export default ExpandableText;
