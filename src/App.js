@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import { Nav, Navbar } from 'react-bootstrap';
+import { Icon } from 'semantic-ui-react';
+// import Badge from '@material-ui/core/Badge';
 
 import Home from './components/Home';
 import Cart from './components/Cart';
@@ -76,7 +78,7 @@ const App = () => {
           Products
         </Link>
         <Link class="item" as={Link} to="/cart">
-          <i class="shopping cart icon"></i>
+          <Badge noOfItems={cart.length} />
           Cart
         </Link>
       </div>
