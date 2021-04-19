@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
-import { Nav, Navbar } from 'react-bootstrap';
 import { Icon } from 'semantic-ui-react';
-// import Badge from '@material-ui/core/Badge';
+import { Link, Route, Switch } from 'react-router-dom';
 
 import Home from './components/Home';
 import Cart from './components/Cart';
@@ -94,25 +92,6 @@ const App = () => {
           <Route path="/cart" render={() => <Cart cart={cart} updateCart={updateCart} clearCart={clearCart} />} />
         </Switch>
       </div>
-      {/* <Navbar bg="primary" expand="lg" variant="dark">
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="w-100 nav-fill" variant="pills">
-            <Nav.Item><Nav.Link as={Link} to="/">Home</Nav.Link></Nav.Item>
-            <Nav.Item><Nav.Link as={Link} to="/products">Products</Nav.Link></Nav.Item>
-            <Nav.Item><Nav.Link as={Link} to="/cart"><Badge noOfItems={cart.length} /></Nav.Link></Nav.Item>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar> */}
-      {/* <Switch>
-        <Route path="/" exact render={() => <Home />} />
-        <Route path="/products" exact render={() => <Cards products={products} cart={cart} addToCart={addToCart} />} />
-        <Route
-          path="/products/:id"
-          render={({ match }) => <Product product={products.find(prod => prod.id === parseInt(match.params.id))} />}
-        />
-        <Route path="/cart" render={() => <Cart cart={cart} updateCart={updateCart} clearCart={clearCart} />} />
-      </Switch> */}
     </div>
   );
 }

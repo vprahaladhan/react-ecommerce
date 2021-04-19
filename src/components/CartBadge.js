@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const CustomizedBadge = ({ noOfItems }) => (
   <div style={{marginBottom: '10px'}}>
     <Badge badgeContent={noOfItems} color="primary" classes={{badge: useStyles().font2}}>
-      <Icon name="shopping cart" size="large" />
+      <Icon name="shopping cart" size="big" />
     </Badge>
   </div>
 );
