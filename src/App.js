@@ -7,10 +7,13 @@ import Cart from './components/Cart';
 import Cards from './components/Cards';
 import Product from './components/Product';
 import Badge from './components/CartBadge';
+import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const [products, setProducts] = React.useState([]);
   const [cart, setCart] = React.useState([]);
+  const [user, setUser] = React.useState();
 
   useEffect(() => {
     queryCart().then(cart => setCart(cart));
@@ -84,12 +87,14 @@ const App = () => {
       <div style={{marginLeft: '90px'}}>
         <Switch>
           <Route path="/" exact render={() => <Home />} />
+          <Route path="/login" render={() => <Login />} />
           <Route path="/products" exact render={() => <Cards products={products} cart={cart} addToCart={addToCart} />} />
           <Route
             path="/products/:id"
             render={({ match }) => <Product product={products.find(prod => prod.id === parseInt(match.params.id))} />}
           />
           <Route path="/cart" render={() => <Cart cart={cart} updateCart={updateCart} clearCart={clearCart} />} />
+          {/* <PrivateRoute component={Cart} path="/cart" user={user} cart={cart} updateCart={updateCart} clearCart={clearCart} /> */}
         </Switch>
       </div>
     </div>
