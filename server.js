@@ -14,6 +14,6 @@ server.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-server.listen(process.env.PORT || 5000, () => {
+server.listen(process.env.PORT || 3000, () => {
   console.log('JSON Server is running')
 });

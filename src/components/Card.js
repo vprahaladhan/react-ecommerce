@@ -4,26 +4,28 @@ import { Link } from 'react-router-dom';
 
 import Text from './ExpandableText';
 
-const ProductCard = ({ product, addToCart, cart }) => (
+const BookCard = ({ book, addToCart, cart }) => (
   <Card>
-    <Link to={`/products/${product.id}`}> 
-      <Card.Img variant="top" src={product.image} alt={product.title} className='card-img' />
+    <Link to={`/books/${book.id}`}>
+      {console.log('Book > ', book)}
+      {/* <Card.Img variant="top" src={book.imageLinks.smallThumbnail} alt={book.title} className='card-img' /> */}
+      <img src={book.imageLinks.smallThumbnail} alt={book.title} />
     </Link>
     <Card.Body>
-      <Link to={`/products/${product.id}`}>
-        <Card.Title>{product.title}</Card.Title>
+      <Link to={`/books/${book.id}`}>
+        <Card.Title>{book.title}</Card.Title>
       </Link>
-      <Text maxHeight={95}>{product.description}</Text>
-      <Card.Text>AUD {product.price}</Card.Text>
+      {book.authors.map(author => <Card.Text key={author}>{author}, </Card.Text>)}
+      <Text maxHeight={95}>{book.description}</Text>
     </Card.Body>
     <Card.Footer>
       <Button 
-        disabled={cart.find(({ product_sku }) => product_sku === product.id)}
+        disabled={cart.find(({ book_sku }) => book_sku === book.id)}
         onClick={() => addToCart({
-          product_sku: product.id,
-          title: product.title,
+          book_sku: book.id,
+          title: book.title,
           quantity: 1,
-          price: product.price
+          price: book.price
         })}
       >
         Add to cart
@@ -32,4 +34,4 @@ const ProductCard = ({ product, addToCart, cart }) => (
   </Card>
 );
 
-export default ProductCard;
+export default BookCard;

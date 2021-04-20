@@ -5,19 +5,22 @@ import { Link, Route, Switch } from 'react-router-dom';
 import Home from './components/Home';
 import Cart from './components/Cart';
 import Cards from './components/Cards';
-import Product from './components/Product';
+import Book from './components/Book';
 import Badge from './components/CartBadge';
 import Login from './components/Login';
 import PrivateRoute from './components/PrivateRoute';
 
+const URL = process.env.REACT_APP_BOOKS_API_URL_WITH_KEY;
+const MAX_RESULTS=process.env.REACT_APP_MAX_RESULTS
+
 const App = () => {
-  const [products, setProducts] = React.useState([]);
+  const [totalBooks, setTotalBooks] = React.useState(0); 
+  const [books, setBooks] = React.useState([]);
   const [cart, setCart] = React.useState([]);
   const [user, setUser] = React.useState();
 
   useEffect(() => {
-    queryCart().then(cart => setCart(cart));
-    queryProducts().then(products => setProducts(products));
+    queryCart();
   }, []);
 
   const queryCart = (method = 'GET', body = null, id) => (
@@ -31,8 +34,8 @@ const App = () => {
     }).then(response => response.json())
   );
 
-  const queryProducts = (method = 'GET', body = null) => (
-    fetch(`${process.env.REACT_APP_API_URL}/products`, {
+  const queryBooks = (search, method = 'GET', body = null) => (
+    search && fetch(`${URL}&q=intitle:${search}&maxResults=${MAX_RESULTS}`, {
       method,
       body: body ? JSON.stringify(body) : null,
       headers: {
@@ -40,30 +43,34 @@ const App = () => {
         'Content-Type': 'application/json',
       }
     }).then(response => response.json())
-  )
+      .then(({totalItems, items}) => {
+        setBooks(items);
+        setTotalBooks(totalItems);
+      })
+  );
 
-  const addToCart = (product) => {
-    queryCart('POST', product).then(product => setCart(cart.concat(product)));
+  const addToCart = (book) => {
+    queryCart('POST', book).then(book => setCart(cart.concat(book)));
   }
 
-  const updateCart = (quantity, product) => {
+  const updateCart = (quantity, book) => {
     let newCart = [...cart];
-    const index = newCart.findIndex(prod => prod.id === product.id);
+    const index = newCart.findIndex(prod => prod.id === book.id);
     if (quantity !== 0) {
       newCart[index].quantity = quantity;
-      queryCart('PATCH', { quantity }, product.id).then(() => setCart(newCart));
+      queryCart('PATCH', { quantity }, book.id).then(() => setCart(newCart));
     } else {
       newCart.splice(index, 1);
-      queryCart('DELETE', null, product.id).then(() => setCart(newCart));
+      queryCart('DELETE', null, book.id).then(() => setCart(newCart));
     };
   };
 
   const clearCart = () => {
-    Promise.all(cart.map(product => queryCart('DELETE', null, product.id)))
+    Promise.all(cart.map(book => queryCart('DELETE', null, book.id)))
       .then(() => setCart([]));
   }
 
-  if (!products) {
+  if (!books) {
     return null;
   }
 
@@ -74,9 +81,9 @@ const App = () => {
           <i class="home icon"></i>
           Home
         </Link>
-        <Link class="item" as={Link} to="/products">
+        <Link class="item" as={Link} to="/books">
           <i class="block layout icon"></i>
-          Products
+          Books
         </Link>
         <Link class="item" as={Link} to="/cart">
           <Badge noOfItems={cart.length} />
@@ -88,10 +95,17 @@ const App = () => {
         <Switch>
           <Route path="/" exact render={() => <Home />} />
           <Route path="/login" render={() => <Login />} />
-          <Route path="/products" exact render={() => <Cards products={products} cart={cart} addToCart={addToCart} />} />
+          <Route path="/books" exact render={() => (
+            <Cards 
+              books={books} 
+              cart={cart}
+              totalBooks={totalBooks} 
+              addToCart={addToCart} 
+              queryBooks={queryBooks} />
+          )} />
           <Route
-            path="/products/:id"
-            render={({ match }) => <Product product={products.find(prod => prod.id === parseInt(match.params.id))} />}
+            path="/books/:id"
+            render={({ match }) => <Book book={books.find(prod => prod.id === parseInt(match.params.id))} />}
           />
           <Route path="/cart" render={() => <Cart cart={cart} updateCart={updateCart} clearCart={clearCart} />} />
           {/* <PrivateRoute component={Cart} path="/cart" user={user} cart={cart} updateCart={updateCart} clearCart={clearCart} /> */}

@@ -117,7 +117,7 @@ class CustomColumnTable extends React.Component {
           <Column width={300}>
             <HeaderCell>title</HeaderCell>
             <Cell>
-              {rowData => <Link to={`/products/${rowData.product_sku}`}>{rowData.title}</Link>}
+              {rowData => <Link to={`/books/${rowData.book_sku}`}>{rowData.title}</Link>}
             </Cell>
           </Column>
 
@@ -155,7 +155,7 @@ const Cart = ({ cart, clearCart }) => {
       <h2 style={{ textAlign: 'center' }}>SHOPPING CART</h2>
       <br /><br />
       <CustomColumnTable cart={cart} />
-      <Button><Link to='/products'>Continue Shopping</Link></Button>
+      <Button><Link to='/books'>Continue Shopping</Link></Button>
       <Button>Update Cart</Button>
       <Button onClick={clearCart}>Clear Cart</Button>
     </div>
@@ -178,7 +178,7 @@ export default Cart;
 
   //       <Column width={150} fixed>
   //         <HeaderCell>SKU</HeaderCell>
-  //         <Cell dataKey="product_sku" />
+  //         <Cell dataKey="book_sku" />
   //       </Column>
 
   //       <Column width={300}>
@@ -295,7 +295,7 @@ const EditTable = ({ cart }) => {
 
       <Column width={100} fixed>
         <HeaderCell>SKU</HeaderCell>
-        <Cell dataKey="product_sku" />
+        <Cell dataKey="book_sku" />
       </Column>
 
       <Column width={300}>
@@ -336,7 +336,7 @@ const Cart = ({ cart, clearCart }) => {
       <br /><br />
       <EditTable cart={cart} />
       <div id="cart-action-container">
-        <Button className='cart-action'><Link to='/products'>Continue Shopping</Link></Button>
+        <Button className='cart-action'><Link to='/books'>Continue Shopping</Link></Button>
         <Button className='cart-action'>Update Cart</Button>
         <Button className='cart-action' onClick={clearCart}>Clear Cart</Button>
       </div>
@@ -360,7 +360,7 @@ onRowClick={data => {
 
 <Column width={100} fixed>
   <HeaderCell>SKU</HeaderCell>
-  <Cell dataKey="product_sku" />
+  <Cell dataKey="book_sku" />
 </Column>
 
 <Column width={300}>

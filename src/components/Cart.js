@@ -36,21 +36,21 @@ const Cart = ({ cart, updateCart, clearCart }) => {
           </tr>
         </thead>
         <tbody>
-          {cart.map(product => (
-            <tr key={product.id}>
-              <td>{product.id}</td>
-              <td>{product.product_sku}</td>
-              <td>{product.title}</td>
+          {cart.map(book => (
+            <tr key={book.id}>
+              <td>{book.id}</td>
+              <td>{book.book_sku}</td>
+              <td>{book.title}</td>
               <td>
                 <DropdownButton 
                   size='sm' 
-                  title={product.quantity} 
-                  onSelect={(eventkey, event) => updateCart(parseInt(event.target.innerText), product)}>
+                  title={book.quantity} 
+                  onSelect={(eventkey, event) => updateCart(parseInt(event.target.innerText), book)}>
                   {[...Array(11).keys()].map(item => <Dropdown.Item key={item}>{item}</Dropdown.Item>)}
                 </DropdownButton>
               </td>
-              <td>${product.price}</td>
-              <td>${product.quantity * product.price}</td>
+              <td>${book.price}</td>
+              <td>${book.quantity * book.price}</td>
             </tr>            
           ))}
           <tr>
@@ -68,7 +68,7 @@ const Cart = ({ cart, updateCart, clearCart }) => {
         </tbody>
       </Table>
       <div id="cart-action-container">
-        <Button className='cart-action'><Link to='/products'>Continue Shopping</Link></Button>
+        <Button className='cart-action'><Link to='/books'>Continue Shopping</Link></Button>
         <Button className='cart-action' onClick={clearCart}>Clear Cart</Button>
         <Button className='cart-action' onClick={onCheckout}>Checkout</Button>
       </div>

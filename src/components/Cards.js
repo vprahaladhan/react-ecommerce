@@ -4,6 +4,9 @@ import { Pagination } from '@material-ui/lab';
 import { withStyles } from '@material-ui/core/styles';
 
 import Card from './Card';
+import SearchBooks from './SearchBooks';
+
+const MAX_RESULTS=process.env.REACT_APP_MAX_RESULTS;
 
 const GlobalCss = withStyles({
   // @global is handled by jss-plugin-global.
@@ -16,18 +19,19 @@ const GlobalCss = withStyles({
   },
 })(() => null);
 
-const Cards = ({ products, cart, addToCart }) => { 
+const Cards = ({ books, cart, totalBooks, addToCart, queryBooks }) => { 
   const [page, setPage] = React.useState(1);
 
   return (
     <div>
       <GlobalCss />
-      <Pagination count={products.length / 4} shape="rounded" onChange={(event, page) => setPage(page)} />
+      <SearchBooks queryBooks={queryBooks} />
+      {console.log('Total Books >> ', totalBooks)}
+      <Pagination count={Math.ceil(totalBooks / MAX_RESULTS)} shape="rounded" onChange={(event, page) => setPage(page)} />
       <CardDeck>
-        {products.slice((page - 1) * 4, page * 4).map(product => {
-            return <Card key={product.id} product={product} addToCart={addToCart} cart={cart} />
-          })
-        }
+        {books.map(book => {
+          return <Card key={book.id} book={book.volumeInfo} addToCart={addToCart} cart={cart} />
+        })}
       </CardDeck>
     </div>
   );
