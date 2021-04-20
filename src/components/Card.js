@@ -6,11 +6,11 @@ import Text from './ExpandableText';
 
 const ProductCard = ({ product, addToCart, cart }) => (
   <Card>
-    <Link to={`/products/${product.id}`}> 
+    <Link to={`/react-ecommerce/products/${product.id}`}> 
       <Card.Img variant="top" src={product.image} alt={product.title} className='card-img' />
     </Link>
     <Card.Body>
-      <Link to={`/products/${product.id}`}>
+      <Link to={`/react-ecommerce/products/${product.id}`}>
         <Card.Title>{product.title}</Card.Title>
       </Link>
       <Text maxHeight={95}>{product.description}</Text>

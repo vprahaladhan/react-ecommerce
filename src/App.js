@@ -83,13 +83,13 @@ const App = () => {
 
       <div style={{marginLeft: '90px'}}>
         <Switch>
-          <Route path="/" exact render={() => <Home />} />
-          <Route path="/products" exact render={() => <Cards products={products} cart={cart} addToCart={addToCart} />} />
+          <Route path="/react-ecommerce" exact render={() => <Home />} />
+          <Route path="/react-ecommerce/products" exact render={() => <Cards products={products} cart={cart} addToCart={addToCart} />} />
           <Route
-            path="/products/:id"
+            path="/react-ecommerce/products/:id"
             render={({ match }) => <Product product={products.find(prod => prod.id === parseInt(match.params.id))} />}
           />
-          <Route path="/cart" render={() => <Cart cart={cart} updateCart={updateCart} clearCart={clearCart} />} />
+          <Route path="/react-ecommerce/cart" render={() => <Cart cart={cart} updateCart={updateCart} clearCart={clearCart} />} />
         </Switch>
       </div>
     </div>
