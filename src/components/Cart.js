@@ -68,7 +68,7 @@ const Cart = ({ cart, updateCart, clearCart }) => {
         </tbody>
       </Table>
       <div id="cart-action-container">
-        <Button className='cart-action'><Link to='/products'>Continue Shopping</Link></Button>
+        <Button className='cart-action'><Link to='/react-ecommerce/products'>Continue Shopping</Link></Button>
         <Button className='cart-action' onClick={clearCart}>Clear Cart</Button>
         <Button className='cart-action' onClick={onCheckout}>Checkout</Button>
       </div>

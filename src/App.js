@@ -67,15 +67,15 @@ const App = () => {
   return (
     <div>
       <div class="ui visible left demo vertical inverted sidebar labeled icon menu">
-        <Link class="item" as={Link} to="/">
+        <Link class="item" as={Link} to="/react-ecommerce">
           <i class="home icon"></i>
           Home
         </Link>
-        <Link class="item" as={Link} to="/products">
+        <Link class="item" as={Link} to="/react-ecommerce/products">
           <i class="block layout icon"></i>
           Products
         </Link>
-        <Link class="item" as={Link} to="/cart">
+        <Link class="item" as={Link} to="/react-ecommerce/cart">
           <Badge noOfItems={cart.length} />
           Cart
         </Link>
