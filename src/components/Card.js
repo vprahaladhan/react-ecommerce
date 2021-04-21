@@ -7,15 +7,13 @@ import Text from './ExpandableText';
 const BookCard = ({ book, addToCart, cart }) => (
   <Card>
     <Link to={`/books/${book.id}`}>
-      {console.log('Book > ', book)}
-      {/* <Card.Img variant="top" src={book.imageLinks.smallThumbnail} alt={book.title} className='card-img' /> */}
-      <img src={book.imageLinks.smallThumbnail} alt={book.title} />
+      <Card.Img variant="top" src={book.imageLinks && book.imageLinks.smallThumbnail} alt={book.title} className='card-img' />
     </Link>
     <Card.Body>
       <Link to={`/books/${book.id}`}>
         <Card.Title>{book.title}</Card.Title>
       </Link>
-      {book.authors.map(author => <Card.Text key={author}>{author}, </Card.Text>)}
+      {book.authors && book.authors.map(author => <Card.Text key={author}>{author}, </Card.Text>)}
       <Text maxHeight={95}>{book.description}</Text>
     </Card.Body>
     <Card.Footer>
@@ -25,7 +23,7 @@ const BookCard = ({ book, addToCart, cart }) => (
           book_sku: book.id,
           title: book.title,
           quantity: 1,
-          price: book.price
+          price: book.price ? book.price : 'NA'
         })}
       >
         Add to cart

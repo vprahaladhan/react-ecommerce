@@ -1,3 +1,18 @@
 {
-  "cart": []
+  "cart": [
+    {
+      "book_sku": "h5bcpumXQ2sC",
+      "title": "The Love of Krishna",
+      "quantity": 1,
+      "price": "NA",
+      "id": 1
+    },
+    {
+      "book_sku": "TEtlplyf-xYC",
+      "title": "The Mahabharata of Krishna-Dwaipayana Vyasa Translated Into English Prose, Vana Parva",
+      "quantity": 1,
+      "price": "NA",
+      "id": 2
+    }
+  ]
 }

@@ -6,14 +6,11 @@ const styles = {
   margin: '20px auto'
 };
 
-const SearchBooks = ({ queryBooks }) => {
-  const [search, setSearch] = React.useState('');
-
+const SearchBooks = ({ search, setSearch, searchBooks }) => {
   const onClick = () => {
-    queryBooks(search).then((results) => {
-      console.log('Results >> ', results);
-      setSearch('');
-    });
+    console.log('Searching books...');
+    searchBooks();
+    // setSearch('');
   }
 
   return (

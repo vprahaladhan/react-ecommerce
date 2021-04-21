@@ -21,18 +21,27 @@ const GlobalCss = withStyles({
 
 const Cards = ({ books, cart, totalBooks, addToCart, queryBooks }) => { 
   const [page, setPage] = React.useState(1);
+  const [search, setSearch] = React.useState();
+
+  const gotoPage = page => {
+    queryBooks(search, (page - 1)  * MAX_RESULTS);
+    setPage(page);
+  }
 
   return (
     <div>
       <GlobalCss />
-      <SearchBooks queryBooks={queryBooks} />
-      {console.log('Total Books >> ', totalBooks)}
-      <Pagination count={Math.ceil(totalBooks / MAX_RESULTS)} shape="rounded" onChange={(event, page) => setPage(page)} />
-      <CardDeck>
-        {books.map(book => {
-          return <Card key={book.id} book={book.volumeInfo} addToCart={addToCart} cart={cart} />
-        })}
-      </CardDeck>
+      <SearchBooks search={search} searchBooks={() => queryBooks(search)} setSearch={value => setSearch(value)} />
+      {(search && books.length !== 0) ? 
+        <div>
+          <Pagination count={Math.ceil(totalBooks / MAX_RESULTS)} shape="rounded" onChange={(event, page) => gotoPage(page)} />
+          <CardDeck>
+            {books.map(book => {
+              return <Card key={book.id} book={{...book.volumeInfo, id: book.id}} addToCart={addToCart} cart={cart} />
+            })}
+          </CardDeck>
+        </div> : <div><h2>No books found!</h2></div>
+      }
     </div>
   );
 }

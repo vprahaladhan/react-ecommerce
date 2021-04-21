@@ -20,7 +20,7 @@ const App = () => {
   const [user, setUser] = React.useState();
 
   useEffect(() => {
-    queryCart();
+    queryCart().then(cart => setCart(cart));
   }, []);
 
   const queryCart = (method = 'GET', body = null, id) => (
@@ -34,8 +34,8 @@ const App = () => {
     }).then(response => response.json())
   );
 
-  const queryBooks = (search, method = 'GET', body = null) => (
-    search && fetch(`${URL}&q=intitle:${search}&maxResults=${MAX_RESULTS}`, {
+  const queryBooks = (search, offset = 0, method = 'GET', body = null) => (
+    fetch(`${URL}&q=intitle:${search}&maxResults=${MAX_RESULTS}&startIndex=${offset}`, {
       method,
       body: body ? JSON.stringify(body) : null,
       headers: {
@@ -44,7 +44,7 @@ const App = () => {
       }
     }).then(response => response.json())
       .then(({totalItems, items}) => {
-        setBooks(items);
+        setBooks(items ? items : []);
         setTotalBooks(totalItems);
       })
   );
