@@ -1,11 +1,3 @@
 {
-  "cart": [
-    {
-      "product_sku": 2,
-      "title": "Mens Casual Premium Slim Fit T-Shirts ",
-      "quantity": 1,
-      "price": 22.3,
-      "id": 2
-    }
-  ]
+  "cart": []
 }

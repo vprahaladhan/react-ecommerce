@@ -83,7 +83,7 @@ const App = () => {
 
       <div style={{marginLeft: '90px'}}>
         <Switch>
-          <Route path="/react-ecommerce" exact render={() => <Home />} />
+          <Route path="/react-ecommerce" exact render={() => <Home products={products} cart={cart} addToCart={addToCart} />} />
           <Route path="/react-ecommerce/products" exact render={() => <Cards products={products} cart={cart} addToCart={addToCart} />} />
           <Route
             path="/react-ecommerce/products/:id"
