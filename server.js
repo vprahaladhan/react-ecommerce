@@ -1,7 +1,9 @@
-const express = require('express');
-const app = express();
-const jsonServer = require('json-server');
 const cors = require('cors');
+const axios = require('axios');
+const express = require('express');
+const jsonServer = require('json-server');
+
+const app = express();
 
 app.use(express.static('build'));
 app.use(cors());
@@ -17,7 +19,18 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger);
 
-app.use('/', jsonServer.defaults(), jsonServer.router('db.json'));
+app.use('/cart', jsonServer.defaults(), jsonServer.router('db.json'));
+
+app.post('/post', async function (req, res) {
+  const { data } = await axios.get(req.body.url);
+  const { count, results, pagination } = data;
+  console.log('Results > ', count, results.length, pagination);
+  res.json({
+    count,
+    results,
+    pagination
+  })
+});
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {

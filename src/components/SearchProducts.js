@@ -6,10 +6,10 @@ const styles = {
   margin: '20px auto'
 };
 
-const SearchBooks = ({ search, setSearch, searchBooks }) => {
+const SearchProducts = ({ search, setSearch, searchProducts }) => {
   const onClick = () => {
     console.log('Searching books...');
-    searchBooks();
+    searchProducts();
     // setSearch('');
   }
 
@@ -25,4 +25,4 @@ const SearchBooks = ({ search, setSearch, searchBooks }) => {
   );
 }
 
-export default SearchBooks;
+export default SearchProducts;

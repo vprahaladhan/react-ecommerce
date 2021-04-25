@@ -1,22 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-// import { Table, Dropdown, Button } from 'rsuite';
-import { Table, Button, Dropdown, DropdownButton } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-// import { Whisper, Icon, IconButton, Popover } from 'rsuite';
+import { Table, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 
-const Cart = ({ cart, updateCart, clearCart }) => {
+const Cart = ({ cart, user, updateCart, clearCart }) => {
+  const history = useHistory();
+
   const onCheckout = () => {
-    clearCart();
-    toast.success('Thank you, your order has been successfully processed!', {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
+    if (user) {
+      clearCart();
+      toast.success('Thank you, your order has been successfully processed!', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
+    else {
+      history.push('/login');
+    }
   }
 
   return (

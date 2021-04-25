@@ -1,53 +1,64 @@
 import React, { useEffect } from 'react';
-import { Icon } from 'semantic-ui-react';
-import { Link, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
+import Loader from './utils/Loader';
 import Home from './components/Home';
 import Cart from './components/Cart';
-import Cards from './components/Cards';
-import Book from './components/Book';
-import Badge from './components/CartBadge';
+import Cards from './containers/Cards';
 import Login from './components/Login';
+import Product from './components/Product';
+import SideMenubar from './components/Sidebar';
+import { findProductInListings } from './utils/Utils';
 import PrivateRoute from './components/PrivateRoute';
 
-const URL = process.env.REACT_APP_BOOKS_API_URL_WITH_KEY;
-const MAX_RESULTS=process.env.REACT_APP_MAX_RESULTS
+const ETSY_URL = process.env.REACT_APP_ETSY_API_NO_CORS_URL;
+const API_KEY = process.env.REACT_APP_ETSY_API_KEY;
+const MAX_RESULTS = process.env.REACT_APP_MAX_RESULTS
 
 const App = () => {
-  const [totalBooks, setTotalBooks] = React.useState(0); 
-  const [books, setBooks] = React.useState([]);
-  const [cart, setCart] = React.useState([]);
   const [user, setUser] = React.useState();
+  const [cart, setCart] = React.useState([]);
+  const [listings, setListings] = React.useState({});
+  const [paginationItems, setPaginationItems] = React.useState({});
+  const [listingsCount, setListingsCount] = React.useState({});
 
   useEffect(() => {
-    queryCart().then(cart => setCart(cart));
+    (async function () {
+      await queryProducts(825);
+      await queryProducts(374);
+      setCart(await queryCart());
+    })();
   }, []);
 
-  const queryCart = (method = 'GET', body = null, id) => (
-    fetch(`${process.env.REACT_APP_LOCAL_URL}/cart/${id ? id : ''}`, {
+  const queryCart = async (method = 'GET', body = null, id) => {
+    const response = await fetch(`${process.env.REACT_APP_LOCAL_URL}/cart/${id ? id : ''}`, {
       method,
       body: body ? JSON.stringify(body) : null,
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       }
-    }).then(response => response.json())
-  );
+    });
+    return await response.json();
+  };
 
-  const queryBooks = (search, offset = 0, method = 'GET', body = null) => (
-    fetch(`${URL}&q=intitle:${search}&maxResults=${MAX_RESULTS}&startIndex=${offset}`, {
-      method,
-      body: body ? JSON.stringify(body) : null,
+  const queryProducts = async (category, keywords, method = 'GET', body = null) => {
+    const etsyURL = `${ETSY_URL}/listings/active?api_key=${API_KEY}&limit=${MAX_RESULTS}`
+    const response = await fetch(`http://localhost:3000/post`, {
+      method: 'POST',
+      body: JSON.stringify({
+        url: `${etsyURL}&${category ? `taxonomy_id=${category}` : ''}&${keywords ? `keywords = ${keywords}` : ''}&includes=MainImage`
+      }),
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
+        "Accept": "application/json"
       }
-    }).then(response => response.json())
-      .then(({totalItems, items}) => {
-        setBooks(items ? items : []);
-        setTotalBooks(totalItems);
-      })
-  );
+    });
+    const { count, results, pagination } = await response.json();
+    setListings(prevState => ({ ...prevState, [category]: results }));
+    setListingsCount(prevState => ({ ...prevState, [category]: count }));
+    setPaginationItems(prevState => ({ ...prevState, [category]: pagination }));
+  };
 
   const addToCart = (book) => {
     queryCart('POST', book).then(book => setCart(cart.concat(book)));
@@ -70,47 +81,27 @@ const App = () => {
       .then(() => setCart([]));
   }
 
-  if (!books) {
-    return null;
-  }
-
   return (
     <div>
-      <div class="ui visible left demo vertical inverted sidebar labeled icon menu">
-        <Link class="item" as={Link} to="/">
-          <i class="home icon"></i>
-          Home
-        </Link>
-        <Link class="item" as={Link} to="/books">
-          <i class="block layout icon"></i>
-          Books
-        </Link>
-        <Link class="item" as={Link} to="/cart">
-          <Badge noOfItems={cart.length} />
-          Cart
-        </Link>
-      </div>
+      <SideMenubar cartItemsCount={cart.length} />
 
-      <div style={{marginLeft: '90px'}}>
-        <Switch>
-          <Route path="/" exact render={() => <Home />} />
-          <Route path="/login" render={() => <Login />} />
-          <Route path="/books" exact render={() => (
-            <Cards 
-              books={books} 
-              cart={cart}
-              totalBooks={totalBooks} 
-              addToCart={addToCart} 
-              queryBooks={queryBooks} />
-          )} />
-          <Route
-            path="/books/:id"
-            render={({ match }) => <Book book={books.find(prod => prod.id === parseInt(match.params.id))} />}
-          />
-          <Route path="/cart" render={() => <Cart cart={cart} updateCart={updateCart} clearCart={clearCart} />} />
-          {/* <PrivateRoute component={Cart} path="/cart" user={user} cart={cart} updateCart={updateCart} clearCart={clearCart} /> */}
-        </Switch>
-      </div>
+      {
+        Object.keys(listings).length !== 0 ? 
+          <div style={{ marginLeft: '125px' }}>
+            <Switch>
+              <Route path="/" exact render={() => <Home listings={listings} />} />
+              <Route path="/login" render={() => <Login setUser={user => setUser(user)} />} />
+              <Route path="/listings" exact render={() => (
+                <Cards cart={cart} addToCart={addToCart} />
+              )} />
+              <Route
+                path="/listings/:id"
+                render={({ match }) => <Product listing={findProductInListings(listings, match.params.id)} />}
+              />
+              <Route path="/cart" render={() => <Cart cart={cart} user={user} updateCart={updateCart} clearCart={clearCart} />} />
+            </Switch>
+          </div> : <Loader />
+      }
     </div>
   );
 }

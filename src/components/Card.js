@@ -1,22 +1,27 @@
 import React from 'react';
-import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Image from 'react-bootstrap/Image';
+import { Button, Card } from 'react-bootstrap';
 
 import Text from './ExpandableText';
 
-const BookCard = ({ book, addToCart, cart }) => (
+const BookCard = ({ listing, addToCart, cart }) => (
   <Card>
-    <Link to={`/books/${book.id}`}>
-      <Card.Img variant="top" src={book.imageLinks && book.imageLinks.smallThumbnail} alt={book.title} className='card-img' />
+    <Link to={`/listings/${listing.listing_id}`}>
+      {
+        listing.MainImage && listing.MainImage.url_170x135 && 
+        <Image variant="top" src={listing.MainImage.url_170x135} alt={listing.title} fluid /> 
+      }
     </Link>
+    
     <Card.Body>
-      <Link to={`/books/${book.id}`}>
-        <Card.Title>{book.title}</Card.Title>
+      <Link to={`/listings/${listing.listing_id}`}>
+        <Card.Title>{listing.title}</Card.Title>
       </Link>
-      {book.authors && book.authors.map(author => <Card.Text key={author}>{author}, </Card.Text>)}
-      <Text maxHeight={95}>{book.description}</Text>
+      <Card.Text>{listing.currency_code} {listing.price}</Card.Text>
     </Card.Body>
-    <Card.Footer>
+
+    {/* <Card.Footer>
       <Button 
         disabled={cart.find(({ book_sku }) => book_sku === book.id)}
         onClick={() => addToCart({
@@ -28,7 +33,7 @@ const BookCard = ({ book, addToCart, cart }) => (
       >
         Add to cart
       </Button>
-    </Card.Footer>
+    </Card.Footer> */}
   </Card>
 );
 

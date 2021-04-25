@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import { useHistory } from 'react-router-dom';
 
-function Login() {
+function Login({ setUser }) {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -12,6 +14,11 @@ function Login() {
 
   function handleSubmit(event) {
     event.preventDefault();
+    setUser({
+      username: email,
+      password
+    });
+    history.goBack();
   }
 
   return (
