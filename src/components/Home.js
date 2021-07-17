@@ -11,8 +11,8 @@ const Home = ({ listings, addToCart, cart }) => (
     <h2 style={{width: 'fit-content', margin: 'auto', paddingBottom: '20px'}}>Welcome to ECOM - for all things online!</h2>
 
     <div style={{textAlign: 'center', position: 'relative'}}>
-      <Carousel keyword='interesting' listings={listings['825']} addToCart={addToCart} cart={cart} />
-      <Carousel keyword='trending' listings={listings['374']} addToCart={addToCart} cart={cart} />
+      <Carousel listings={listings['825']} addToCart={addToCart} cart={cart} />
+      <Carousel listings={listings['374']} addToCart={addToCart} cart={cart} />
     </div>
   </div>
 );

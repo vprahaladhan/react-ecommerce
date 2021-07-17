@@ -17,7 +17,7 @@ const Product = ({ listing }) => {
   const fetchListing = async () => {
     const listingId = location.pathname.split('/').slice(-1);
     const etsyURL = `${ETSY_URL}/listings/${listingId}?api_key=${API_KEY}&includes=MainImage`
-    const response = await fetch(`http://localhost:3000/post`, {
+    const response = await fetch('/post', {
       method: 'POST',
       body: JSON.stringify({
         url: etsyURL

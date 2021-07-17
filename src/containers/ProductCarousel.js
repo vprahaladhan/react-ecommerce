@@ -14,8 +14,12 @@ const responsive = {
     items: 5
   },
   tablet: {
-    breakpoint: { max: 1024, min: 464 },
+    breakpoint: { max: 1024, min: 720 },
     items: 3
+  },
+  largeMobile: {
+    breakpoint: { max: 720, min: 464 },
+    items: 2
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
@@ -23,7 +27,7 @@ const responsive = {
   }
 };
 
-const ProductCarousel = ({ keyword, listings, addToCart, cart }) => {
+const ProductCarousel = ({ listings, addToCart, cart }) => {
   if (!listings) return null;
 
   return (

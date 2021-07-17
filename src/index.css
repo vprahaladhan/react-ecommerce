@@ -113,3 +113,15 @@ code {
   -ms-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
 }
+
+/* table {
+  border: 1px solid black;
+  table-layout: fixed;
+  width: 200px;
+}
+
+th, td {
+  border: 1px solid black;
+  max-width: 100px;
+  overflow: hidden;
+} */

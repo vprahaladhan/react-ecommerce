@@ -9,6 +9,7 @@ import SearchProducts from '../components/SearchProducts';
 const ETSY_URL = process.env.REACT_APP_ETSY_API_NO_CORS_URL;
 const API_KEY = process.env.REACT_APP_ETSY_API_KEY;
 const MAX_RESULTS=process.env.REACT_APP_MAX_RESULTS;
+const PRODUCTS_PER_PAGE = 8;
 
 const GlobalCss = withStyles({
   // @global is handled by jss-plugin-global.
@@ -35,8 +36,8 @@ const Cards = ({ cart, addToCart }) => {
   }
 
   const queryProducts = async (pageNo = 1, method = 'GET', body = null) => {
-    const etsyURL = `${ETSY_URL}/listings/active?api_key=${API_KEY}&limit=8`
-    const response = await fetch(`http://localhost:3000/post`, {
+    const etsyURL = `${ETSY_URL}/listings/active?api_key=${API_KEY}&limit=${PRODUCTS_PER_PAGE}`
+    const response = await fetch('/post', {
       method: 'POST',
       body: JSON.stringify({
         url: `${etsyURL}&includes=MainImage&keywords=${search}&page=${pageNo}`
@@ -56,9 +57,12 @@ const Cards = ({ cart, addToCart }) => {
     <div>
       <GlobalCss />
       <SearchProducts search={search} searchProducts={queryProducts} setSearch={value => setSearch(value)} />
-      {products ? 
+      {products && products.length !== 0 ? 
         <div>
-          <Pagination count={Math.ceil(productsCount / MAX_RESULTS)} shape="rounded" onChange={(event, page) => gotoPage(page)} />
+          <Pagination 
+            count={Math.ceil(productsCount / PRODUCTS_PER_PAGE)} 
+            shape="rounded" 
+            onChange={(event, page) => gotoPage(page)} />
           <CardDeck>
             {products.map(product => (
               <Card key={product.listing_id} listing={product} addToCart={addToCart} cart={cart} />

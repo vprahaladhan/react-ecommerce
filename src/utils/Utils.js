@@ -8,4 +8,4 @@ function findProductInListings(listings, productId) {
   return foundProduct;
 }
 
-module.exports = { findProductInListings };
+export default findProductInListings;

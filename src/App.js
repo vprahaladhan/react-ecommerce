@@ -6,9 +6,11 @@ import Home from './components/Home';
 import Cart from './components/Cart';
 import Cards from './containers/Cards';
 import Login from './components/Login';
+import Logout from './components/Logout';
+import Orders from './containers/Orders';
 import Product from './components/Product';
 import SideMenubar from './components/Sidebar';
-import { findProductInListings } from './utils/Utils';
+import findProductInListings from './utils/Utils';
 import PrivateRoute from './components/PrivateRoute';
 
 const ETSY_URL = process.env.REACT_APP_ETSY_API_NO_CORS_URL;
@@ -30,21 +32,23 @@ const App = () => {
     })();
   }, []);
 
-  const queryCart = async (method = 'GET', body = null, id) => {
-    const response = await fetch(`${process.env.REACT_APP_LOCAL_URL}/cart/${id ? id : ''}`, {
+  const queryCart = async (method = 'GET', body = null, id = '') => {
+    const response = await fetch(`/json-server/cart/${id}`, {
       method,
       body: body ? JSON.stringify(body) : null,
       headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Methods': '*'
       }
     });
-    return await response.json();
+    const results = await response.json();
+    return results;
   };
 
   const queryProducts = async (category, keywords, method = 'GET', body = null) => {
     const etsyURL = `${ETSY_URL}/listings/active?api_key=${API_KEY}&limit=${MAX_RESULTS}`
-    const response = await fetch(`http://localhost:3000/post`, {
+    const response = await fetch('/post', {
       method: 'POST',
       body: JSON.stringify({
         url: `${etsyURL}&${category ? `taxonomy_id=${category}` : ''}&${keywords ? `keywords = ${keywords}` : ''}&includes=MainImage`
@@ -60,37 +64,47 @@ const App = () => {
     setPaginationItems(prevState => ({ ...prevState, [category]: pagination }));
   };
 
-  const addToCart = (book) => {
-    queryCart('POST', book).then(book => setCart(cart.concat(book)));
-  }
+  const addToCart = product => queryCart('POST', product).then(product => setCart(cart.concat(product)));
 
-  const updateCart = (quantity, book) => {
+  const updateCart = (quantity, product) => {
     let newCart = [...cart];
-    const index = newCart.findIndex(prod => prod.id === book.id);
+    const index = newCart.findIndex(prod => prod.product_id === product.product_id);
     if (quantity !== 0) {
       newCart[index].quantity = quantity;
-      queryCart('PATCH', { quantity }, book.id).then(() => setCart(newCart));
+      queryCart('PATCH', { quantity }, product.id).then(() => setCart(newCart));
     } else {
       newCart.splice(index, 1);
-      queryCart('DELETE', null, book.id).then(() => setCart(newCart));
+      queryCart('DELETE', null, product.id).then(() => setCart(newCart));
     };
   };
 
   const clearCart = () => {
-    Promise.all(cart.map(book => queryCart('DELETE', null, book.id)))
+    Promise.all(cart.map(({id}) => queryCart('DELETE', null, id)))
       .then(() => setCart([]));
+  }
+
+  const createOrder = async (order) => {
+    await fetch(`${process.env.REACT_APP_LOCAL_URL}/orders`, {
+      method: 'POST',
+      body: order ? JSON.stringify(order) : null,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      }
+    });
   }
 
   return (
     <div>
-      <SideMenubar cartItemsCount={cart.length} />
+      <SideMenubar user={user} cartItemsCount={cart.length} />
 
       {
         Object.keys(listings).length !== 0 ? 
           <div style={{ marginLeft: '125px' }}>
             <Switch>
-              <Route path="/" exact render={() => <Home listings={listings} />} />
+              <Route path="/" exact render={() => <Home listings={listings} addToCart={addToCart} cart={cart} />} />
               <Route path="/login" render={() => <Login setUser={user => setUser(user)} />} />
+              <Route path="/signup" render={() => <Login setUser={user => setUser(user)} />} />
               <Route path="/listings" exact render={() => (
                 <Cards cart={cart} addToCart={addToCart} />
               )} />
@@ -98,7 +112,11 @@ const App = () => {
                 path="/listings/:id"
                 render={({ match }) => <Product listing={findProductInListings(listings, match.params.id)} />}
               />
-              <Route path="/cart" render={() => <Cart cart={cart} user={user} updateCart={updateCart} clearCart={clearCart} />} />
+              <Route path="/cart" render={() => (
+                <Cart cart={cart} user={user} updateCart={updateCart} clearCart={clearCart} createOrder={createOrder}/>
+              )} />
+              <PrivateRoute path='/account' component={Orders} user={user} />
+              <PrivateRoute path='/logout' component={Logout} user={user} setUser={setUser} />
             </Switch>
           </div> : <Loader />
       }

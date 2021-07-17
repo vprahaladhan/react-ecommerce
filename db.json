@@ -1,3 +1,79 @@
 {
-  "cart": []
+  "cart": [],
+  "users": [
+    {
+      "name": "Shree Chakra",
+      "email": "shree@mail.com",
+      "password": "Shree2018",
+      "id": 1
+    },
+    {
+      "name": "Prahal",
+      "email": "prahal@mail.com",
+      "password": "Prahal73",
+      "id": 2
+    }
+  ],
+  "orders": [
+    {
+      "items": [
+        {
+          "product_id": 982071401,
+          "title": "Romanticism Lady Printing Hard Case MacBook Pro 13 15 16 Touch Bar Retina Aesthetic Renaissance Art Rubberized MacBook Air 2020 keypad Cover",
+          "quantity": 1,
+          "price": "189.00",
+          "id": 1
+        },
+        {
+          "product_id": 746834272,
+          "title": "iPhone 11 Pro Case Clear Fox iPhone 11 Pro Max Case Tree iPhone 11 Case Animal iPhone 11 Max Clear Case Phone Gift Case Pixel 4 Case GA0064",
+          "quantity": 1,
+          "price": "12.12",
+          "id": 2
+        },
+        {
+          "product_id": 1002578853,
+          "title": "Class of 2021 Graduada / Graduado / Graduadx Loteria Style Vinyl Sticker Laptop Decal",
+          "quantity": 1,
+          "price": "3.75",
+          "id": 3
+        }
+      ],
+      "userId": 1,
+      "id": 1
+    },
+    {
+      "items": [
+        {
+          "product_id": 477969731,
+          "title": "THE SPAMP Guitar Practice Amplifier And Distortion Effect",
+          "quantity": 1,
+          "price": "40.00",
+          "id": 1
+        },
+        {
+          "product_id": 959696445,
+          "title": "Center Ring Steering Wheel Custom Color Overlay",
+          "quantity": 1,
+          "price": "5.00",
+          "id": 2
+        }
+      ],
+      "userId": 1,
+      "id": 2
+    },
+    {
+      "items": [
+        {
+          "product_id": 836486362,
+          "title": "Devin Booker Game Winner Funny Sticker 2020 Suns Clippers 2020 bubble  glossy decal #1 lebron basketball 2021 cp3 phoenix",
+          "quantity": 1,
+          "price": "3.99",
+          "id": 1
+        }
+      ],
+      "userId": 2,
+      "id": 3
+    }
+  ]
 }

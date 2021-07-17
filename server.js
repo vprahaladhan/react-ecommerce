@@ -19,7 +19,7 @@ const requestLogger = (request, response, next) => {
 
 app.use(requestLogger);
 
-app.use('/cart', jsonServer.defaults(), jsonServer.router('db.json'));
+app.use('/json-server', jsonServer.defaults(), jsonServer.router('db.json'));
 
 app.post('/post', async function (req, res) {
   const { data } = await axios.get(req.body.url);
@@ -32,7 +32,7 @@ app.post('/post', async function (req, res) {
   })
 });
 
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 });

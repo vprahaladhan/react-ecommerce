@@ -21,19 +21,19 @@ const BookCard = ({ listing, addToCart, cart }) => (
       <Card.Text>{listing.currency_code} {listing.price}</Card.Text>
     </Card.Body>
 
-    {/* <Card.Footer>
+    <Card.Footer>
       <Button 
-        disabled={cart.find(({ book_sku }) => book_sku === book.id)}
+        disabled={cart.find(({ product_id }) => product_id === listing.listing_id)}
         onClick={() => addToCart({
-          book_sku: book.id,
-          title: book.title,
+          product_id: listing.listing_id,
+          title: listing.title,
           quantity: 1,
-          price: book.price ? book.price : 'NA'
+          price: listing.price ? listing.price : 'NA'
         })}
       >
         Add to cart
       </Button>
-    </Card.Footer> */}
+    </Card.Footer>
   </Card>
 );
 
