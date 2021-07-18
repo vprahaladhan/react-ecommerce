@@ -46,12 +46,12 @@ const App = () => {
     return results;
   };
 
-  const queryProducts = async (category = '', keywords = '', method = 'GET', body = null) => {
+  const queryProducts = async (category, keywords, method = 'GET', body = null) => {
     const etsyURL = `${ETSY_URL}/listings/active?api_key=${API_KEY}&limit=${MAX_RESULTS}`
     const response = await fetch('/post', {
       method: 'POST',
       body: JSON.stringify({
-        url: `${etsyURL}&taxonomy_id=${category}&keywords=${keywords}&includes=MainImage`
+        url: `${etsyURL}${category ? '&taxonomy_id=' + category : ''}${keywords ? '&keywords=' + keywords : ''}&includes=MainImage`
       }),
       headers: {
         "Content-Type": "application/json",
